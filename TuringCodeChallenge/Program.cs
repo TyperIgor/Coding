@@ -1,19 +1,352 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
 
-var listA = new List<int> { 2, 1, 3, 0 };
-var listB = new List<int> { 1, 3, 2, 4 };
-var listC = new List<int> { 4, 2, 5, 1 };
+//CreateKeywordIndex(new string[] {"test test software development"});
+static Dictionary<string, List<int>> CreateKeywordIndex(string[] docs)
+{
+    var index = new Dictionary<string, List<int>>();
+
+    for (int i = 0; i < docs.Length; i++)
+    {
+        var words = docs[i].Split(' ');
+        foreach (var word in words)
+        {
+            if (!string.IsNullOrEmpty(word))
+            {
+                if (!index.TryGetValue(word, out var docIndices))
+                {
+                    docIndices = new List<int>();
+                    index.Add(word, docIndices);
+                }
+                docIndices.Add(i);
+            }
+        }
+    }
+
+    return index;
+}
 
 
 
 
-var maxValue = FindMaxVale(listA, listB, listC);
 
-Console.WriteLine("Soma dos valores encontrados em B e C: " + maxValue);
+
+
+
+
+
+
+
+
+static void SortCharacters(string input)
+{
+    char[] chars = input.ToCharArray();
+    Array.Sort(chars);
+    string sorted = new string(chars);
+
+    HashSet<string> sortedArrayAnagram = new HashSet<string>();
+
+    sortedArrayAnagram.Add(sorted);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//project euler exercise 
+//int t = Convert.ToInt32(Console.ReadLine());
+//for (int i = 0; i < t; i++)
+//{
+//    int n = Convert.ToInt32(Console.ReadLine());
+
+//    n -= 1;
+
+//    int sumOfThree = AritmeticExpression(3);
+//    int sumOfFive = AritmeticExpression(5);
+//    int sumOfFifteen = AritmeticExpression(15);
+
+//    int total = 0;
+//    int AritmeticExpression(int divisor)
+//    {
+//        var result = n / divisor;
+
+//        return divisor * (result * (result + 1)) / 2;
+//    }
+
+//    total = sumOfThree + sumOfFive - sumOfFifteen;
+
+//    sumOfThree = 0;
+//    sumOfFive = 0;
+//    sumOfFifteen = 0;
+//    Console.WriteLine(total);
+//}
+
+
+
+static int OptimizedSolutionMultipleOfThreeAndFive()
+{
+    int limit = 10;
+    limit -=1;
+    int sum = 0;
+    int a = 3; int b = 5;
+
+    int total = AritmeticExpression(3) + AritmeticExpression(5) - AritmeticExpression(15);
+
+    int AritmeticExpression(int divisor)
+    {
+        var n = limit / divisor;
+
+        return divisor * (n * (n + 1)) / 2;
+    }
+
+    return total;
+}
+
+
+
+//int[] array = new int[] { 1, 2, 3, 4, 5 };
+
+//var result = TwoSumT(array, 9);
+
+int[] arr = { 10, 5, 2, 7, 1, -10 };
+int k = 15;
+
+Console.WriteLine("Longest SubArray:", longestPrefixSubarray(arr, k));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bool Palindrome(string texto)
+{
+
+
+    if (string.IsNullOrWhiteSpace(texto))
+        return false;
+
+    texto = texto.ToLower();
+
+    int inicio = 0;
+    int fim = texto.Length - 1;
+
+    while (inicio < fim)
+    {
+        if (texto[inicio] != texto[fim])
+            return false;
+
+        inicio++;
+        fim--;
+    }
+
+     return true;
+}
+
+
+
+static string LongestPalindrome(string s)
+{
+    if (string.IsNullOrEmpty(s)) return "none";
+
+    int start = 0;
+    int maxLength = 0;
+
+    for (int i = 0; i < s.Length; i++)
+    {
+        ExpandFromCenter(s, i, i, ref start, ref maxLength);
+        ExpandFromCenter(s, i, i + 1, ref start, ref maxLength);
+    }
+
+    if (maxLength < 3)
+        return "none";
+
+    return s.Substring(start, maxLength);
+}
+
+static void ExpandFromCenter(string s, int left, int right, ref int start, ref int maxLength)
+{
+    while (left >= 0 && right < s.Length && s[left] == s[right])
+    {
+        int length = right - left + 1;
+
+        if (length > maxLength)
+        {
+            start = left;
+            maxLength = length;
+        }
+
+        left--;
+        right++;
+    }
+}
+
+
+
+static string SearchingChallenge(string str)
+{
+    string varOcg = "";     // maior palíndromo encontrado
+    int varFiltersCg = 0;   // tamanho do maior palíndromo
+
+    // Função auxiliar para expandir em torno do centro
+    string Expand(string s, int left, int right)
+    {
+        while (left >= 0 && right < s.Length && s[left] == s[right])
+        {
+            left--;
+            right++;
+        }
+        return s.Substring(left + 1, right - left - 1);
+    }
+
+    for (int i = 0; i < str.Length; i++)
+    {
+        // Palíndromo com centro em i (ímpar)
+        string p1 = Expand(str, i, i);
+        if (p1.Length > varFiltersCg)
+        {
+            varFiltersCg = p1.Length;
+            varOcg = p1;
+        }
+
+        // Palíndromo com centro entre i e i+1 (par)
+        string p2 = Expand(str, i, i + 1);
+        if (p2.Length > varFiltersCg)
+        {
+            varFiltersCg = p2.Length;
+            varOcg = p2;
+        }
+    }
+
+    if (varOcg.Length <= 2)
+        return "none";
+
+    return varOcg;
+}
+
+
+
+
+
+
+
+
+
+
+//solutionMostZero(new int[] { 4, 7, 5, 0, 0, 2, 8, 9 });
+
+static int solutionMostZero(int[] numbers)
+{
+
+    var mostZeroClosest = 0;
+
+    var lastIdx = 0;
+
+    var i = 0;
+
+    mostZeroClosest = numbers[i];
+
+    var result = mostZeroClosest;
+
+
+    while (i <= numbers.Length - 1)
+    {
+        if (numbers[i] == 0)
+        {
+            i++;
+            continue;
+        }
+
+
+        if (numbers[i] < mostZeroClosest)
+        {
+            mostZeroClosest = numbers[i];
+            result += mostZeroClosest;
+        }
+
+        numbers[i] = numbers[i] - mostZeroClosest;
+
+        if (numbers[i] != 0)
+        {
+            continue;
+        }
+
+
+        i++;
+    }
+
+    return result;
+}   
+
+
+int[] solution(int[] diffs)
+{
+    var actualValue = 0;
+    var lastMaxValue = 0;
+
+    var initialRating = 1500;
+
+    lastMaxValue = initialRating;
+    actualValue = initialRating;
+
+    for (int i = 0; i <= diffs.Length - 1;  i++)
+    {
+        if (diffs[i] < 0)
+        {
+            initialRating += diffs[i];
+            actualValue = initialRating;
+        }
+
+        if (diffs[i] > 0)
+        {
+            if (initialRating + diffs[i] > lastMaxValue)
+                lastMaxValue = initialRating + diffs[i];
+
+
+            initialRating += diffs[i];
+            actualValue = initialRating;
+
+        }
+    }
+
+    return new int[] { lastMaxValue, actualValue };
+}
+
+
+
+
+
+
+
+
+
 
 static List<int> Solve(int[] arrayA, int[] arrayB)
 {
@@ -53,63 +386,156 @@ static int FindMaxVale(List<int> listA, List<int> listB, List<int> listC)
 {
     int currentListIndex = 0; // Start at listA
 
-    int idxA = 0; int idxBorC = 0, idxC = 0;
+    int idxA = 0; int idxBorC = 0, positionValue = 0;
+    var hash = new HashSet<string>();
 
-    var journeyBiggestValuesFoundedList = new List<int>(); 
+    var journey = new List<List<int>> { listA, listB, listA, listC };
 
-    bool inListA = true;
+    double maxValueB = 0;
+    double maxValueC = 0;
+
     bool inListB = false;
     bool inListC = false;
 
-    double maxValue = double.MinValue;
-
-    while (true)
+    while(true)
     {
-        if ( (idxA >= listA.Count()) || (idxBorC >= listB.Count()) || (idxC >= listC.Count()))
-            return journeyBiggestValuesFoundedList.Sum();
-
-        if (inListA)
-        {
-
-            idxBorC = listA[idxA];
-            currentListIndex = (currentListIndex + 1) % 4; // Cycles through 0,1,2,3,0,1,...
-
-            if (currentListIndex + 1 == 4)
-                inListC = true;
-        }
         if (inListB)
         {
-
-            if (listB[idxBorC] > maxValue)
+            if (hash.Contains($"{currentListIndex},{idxBorC}"))
             {
-                maxValue = listB[idxBorC];
+                return (int)(maxValueB + maxValueC);
             }
 
-            idxA = listB[idxBorC];
-            currentListIndex = (currentListIndex + 1) % 4; // Cycles through 0,1,2,3,0,1,...
-            journeyBiggestValuesFoundedList.Add((int)maxValue);
+            if (idxBorC >= listB.Count())
+                return (int)(maxValueB + maxValueC);
 
-            journeyBiggestValuesFoundedList.RemoveAll(item => item < maxValue);
+            positionValue = journey[currentListIndex][idxBorC];
+
+            hash.Add($"{currentListIndex},{idxBorC}");
+
+            idxA = positionValue;
+
+            if (listB[idxBorC] > maxValueB)
+            {
+                maxValueB = listB[idxBorC];
+            }
+
+            inListB = !inListB;
+            currentListIndex = (currentListIndex + 1) % 4;
+
+            continue;
         }
         if (inListC)
         {
+            if (hash.Contains($"{currentListIndex},{idxBorC}"))
+            {
+                return (int)(maxValueB + maxValueC);
+            }
 
-            idxC = listC[idxBorC];
-            journeyBiggestValuesFoundedList.Add(idxC);
-            currentListIndex = (currentListIndex + 1) % 4; // Cycles through 0,1,2,3,0,1,...
+            if (idxBorC >= listC.Count())
+                return (int)(maxValueB + maxValueC);
 
-            idxA = idxC;
+            positionValue = journey[currentListIndex][idxBorC];
 
-            journeyBiggestValuesFoundedList.RemoveAll(item => item < maxValue);
+            hash.Add($"{currentListIndex},{idxBorC}");
 
-            inListC = false;
-            inListB = true;
-            inListA = false;
+            idxA = positionValue;
+
+            if (journey[currentListIndex][idxBorC] > maxValueC)
+            {
+                maxValueC = journey[currentListIndex][idxBorC];
+            }
+
+            currentListIndex = (currentListIndex + 1) % 4;
+
+            inListC = !inListC;
+
+            continue;
+        }
+        else
+        {
+            if (hash.Contains($"{currentListIndex},{idxA}"))
+            {
+                return (int)(maxValueB + maxValueC);
+            }
+
+            if (idxA >= listA.Count())
+                return (int)(maxValueB + maxValueC);
+
+            positionValue = journey[currentListIndex][idxA];
+
+            idxBorC = positionValue;
+
+            hash.Add($"{currentListIndex},{idxA}");
+
+            currentListIndex = (currentListIndex + 1) % 4;
+
+            if (currentListIndex == 3)
+            {
+                inListC = true;
+                continue;
+            }
+
+            inListB = !inListB;
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+
+int[,] matrix = { { 4, 4, 4, 4 },
+                  { 1, 4, 4, 4 },
+                  { 4, 1, 4, 4 },
+                  { 4, 4, 0, 4 }
+                };
+
+
+static bool SearchMatrix(int[,] mtx, int target)
+{
+
+    int rows = mtx.GetLength(0);
+    int cols = mtx.GetLength(1);
+    int row = 0, col = 0;
+
+    var valuesConstantArray = new ArrayList
+    {
+        mtx[row, col]
+    };
+    while (row < rows && col < cols)
+    {
+        while (col + 1 < cols)
+        {
+            if (valuesConstantArray.Contains(mtx[row + 1, col + 1]))
+            {
+                row++;
+                col++;
+            }
+            //else
+            //{
+            //    col++;
+            //    valuesConstantArray.Add(mtx[row, col]);
+            //    break;
+            //}
         }
 
-        inListA = !inListA;
-        inListB = !inListB;
+        if (!(col + 1 < cols)) // finished check all collums 
+        {
+            col = 0;
+            row++;
+            valuesConstantArray.Add(mtx[row, col]);
+        }
+
+        if (row + 1 >= rows)
+        {
+            return false;
+        }
     }
+
+    return false;
 }
 
 
@@ -133,19 +559,14 @@ static int FindMaxVale(List<int> listA, List<int> listB, List<int> listC)
 
 
 
-
-
-
-
-
-var res = FormatNewspaper(
-    new string[][]
-    {
-        new string[] { "This", "is", "an", "example", "of", "text", "justification." },
-        new string[] { "Another", "paragraph", "goes", "here." }
-    },
-    16
-);
+//var res = FormatNewspaper(
+//    new string[][]
+//    {
+//        new string[] { "This", "is", "an", "example", "of", "text", "justification." },
+//        new string[] { "Another", "paragraph", "goes", "here." }
+//    },
+//    16
+//);
 
 
 static string[] FormatNewspaper(string[][] paragraphs, int width)
@@ -213,13 +634,7 @@ static string Center(string text, int width)
 
 
 
-var test = solution(new int[] { 1, 5, 4, 10, 9 }, 3);
-
-Console.WriteLine(test);
-
-
-
-static int solution(int[] heights, int viewingGap)
+static int solsution(int[] heights, int viewingGap)
 {
     int n = heights.Length;
     int minDiff = int.MaxValue;
@@ -437,6 +852,12 @@ static Dictionary<string, object> RemoveNotValidKeysFromInputJson(string inputJs
 
 
 
+var array = new int[] { 1, 2, 3, 4, 5 };
+Span<int> span = array.AsSpan(1, 3);
+span[0] = 10;
+Console.WriteLine(array[1]);
+
+
 static int[] TwoSum(int[] nums, int target)
 {
     var hashPairSumValues = new HashSet<int[]>();
@@ -505,7 +926,65 @@ static int[] TwoSumFirstOne(int[] nums, int target)
     return new int[] { 0 };
 }
 
-static int[] TwoSumT(int[] nums, int target)
+static int longestPrefixSubarray(int[] arr, int k)
+{
+    Dictionary<int, int> mp = new Dictionary<int, int>();
+    int res = 0;
+    int prefSum = 0;
+
+    for (int i = 0; i < arr.Length; ++i)
+    {
+        prefSum += arr[i];
+
+        // Check if the entire prefix sums to k
+        if (prefSum == k)
+        {
+            res = i + 1;
+            if (!mp.ContainsKey(prefSum))
+                mp[prefSum] = i;
+
+            continue;
+        }
+        else if (mp.ContainsKey(prefSum - k))
+            res = Math.Max(res, i - mp[prefSum - k]);
+
+        // Store only first occurrence index of prefSum
+        if (!mp.ContainsKey(prefSum))
+            mp[prefSum] = i;
+    }
+
+    return res;
+}
+
+
+static int longestSubarray(int[] arr, int k)
+{
+    int res = 0;
+
+    for (int i = 0; i < arr.Length; i++)
+    {
+
+        // Sum of subarray from i to j
+        int sum = 0;
+        for (int j = i; j < arr.Length; j++)
+        {
+            sum += arr[j];
+
+            // If subarray sum is equal to k
+            if (sum == k)
+            {
+
+                // find subarray length and update result
+                int subLen = j - i + 1;
+                res = Math.Max(res, subLen);
+            }
+        }
+    }
+
+    return res;
+}
+
+static int[] TwoSumT(int[] nums, int target) 
 {
     Dictionary<int, int> map = new Dictionary<int, int>();
 

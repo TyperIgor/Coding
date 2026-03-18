@@ -2,8 +2,11 @@
 using System.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TuringCodeChallenge.BinarySearch;
 
 
+
+BinarySearchImp.BinarySearchIterative(new int[] { 1, 2, 3, 4, 5,6,7,8,9 }, 7);
 
 //CreateKeywordIndex(new string[] {"test test software development"});
 static Dictionary<string, List<int>> CreateKeywordIndex(string[] docs)
@@ -54,50 +57,6 @@ static void SortCharacters(string input)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//project euler exercise 
-//int t = Convert.ToInt32(Console.ReadLine());
-//for (int i = 0; i < t; i++)
-//{
-//    int n = Convert.ToInt32(Console.ReadLine());
-
-//    n -= 1;
-
-//    int sumOfThree = AritmeticExpression(3);
-//    int sumOfFive = AritmeticExpression(5);
-//    int sumOfFifteen = AritmeticExpression(15);
-
-//    int total = 0;
-//    int AritmeticExpression(int divisor)
-//    {
-//        var result = n / divisor;
-
-//        return divisor * (result * (result + 1)) / 2;
-//    }
-
-//    total = sumOfThree + sumOfFive - sumOfFifteen;
-
-//    sumOfThree = 0;
-//    sumOfFive = 0;
-//    sumOfFifteen = 0;
-//    Console.WriteLine(total);
-//}
 
 
 
@@ -849,13 +808,6 @@ static Dictionary<string, object> RemoveNotValidKeysFromInputJson(string inputJs
 
     return resultDictionary;
 }
-
-
-
-var array = new int[] { 1, 2, 3, 4, 5 };
-Span<int> span = array.AsSpan(1, 3);
-span[0] = 10;
-Console.WriteLine(array[1]);
 
 
 static int[] TwoSum(int[] nums, int target)
